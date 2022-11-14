@@ -1,0 +1,25 @@
+
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+    hikari:
+      auto-commit: true
+    name: depthchart
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+server:
+  servlet:
+    context-path: /addressbook
+
