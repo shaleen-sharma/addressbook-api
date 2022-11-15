@@ -10,7 +10,7 @@ spring:
     driverClassName: org.h2.Driver
     hikari:
       auto-commit: true
-    name: depthchart
+    name: addressbook
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
     hibernate:

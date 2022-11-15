@@ -1,5 +1,6 @@
 # addressbook-api
 The api saves the addressbook entries (addressBookId, personName, phoneNumber) for different users. The user name needs to be passed as a path variable.
+The phone numbers will be saved in international format for consistency, ex. +61411111111. 
 
  
  #### Usage:

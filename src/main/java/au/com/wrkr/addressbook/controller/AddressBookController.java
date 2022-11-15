@@ -39,6 +39,7 @@ public class AddressBookController {
         this.phoneNormalisationService = phoneNormalisationService;
     }
 
+    //Allow string patterns with alphabets and numbers
     private static final String pattern = "^[a-zA-Z0-9]*$";
 
     @GetMapping(value = "/user/{username}/addressbook")
@@ -48,11 +49,12 @@ public class AddressBookController {
                     pattern, message = "Invalid username") final String username,
             @RequestParam(name = "addressBookName", required = false) @Pattern(regexp =
                     pattern, message = "Invalid addressBookName") String addressBookName) {
-        logger.info("getEntries called: {}: ", username);
-       return addressBookService.getAddressBookEntries(username.toUpperCase(), addressBookName.toUpperCase());
+        logger.info("getEntries called: username={}: ", username);
+        return addressBookService.getAddressBookEntries(username.toUpperCase(), addressBookName.toUpperCase());
     }
 
-    @GetMapping(value = "/user/{username}/addressbook/{addressBookName1}/{addressBookName2}")
+    @GetMapping(value = "/user/{username}/addressbook/{addressBookName1" +
+            "}/{addressBookName2}")
     @ResponseStatus(HttpStatus.OK)
     public List<AddressBookEntries> getAddressBookIntersection(
             @PathVariable(name = "username") @Pattern(regexp =
@@ -61,13 +63,16 @@ public class AddressBookController {
                     pattern, message = "Invalid addressBookName1") String addressBookName1,
             @PathVariable(name = "addressBookName2") @Pattern(regexp =
                     pattern, message = "Invalid addressBookName2") String addressBookName2) {
-        logger.info("getAddressBookIntersection called, userName = {}, addressBookName1 = {}, " +
-                "addressBookName2 = {} ", username, addressBookName1, addressBookName2);
+        logger.info("getAddressBookIntersection called, userName = {}, " +
+                "addressBookName1 = {}, " +
+                "addressBookName2 = {} ", username, addressBookName1,
+                addressBookName2);
         return addressBookService.getUniqueNamesOfLists(username.toUpperCase(),
                 addressBookName1.toUpperCase(), addressBookName2.toUpperCase());
     }
 
-    @PostMapping(value = "/user/{username}/addressbook/{addressBookName}/entries")
+    @PostMapping(value = "/user/{username}/addressbook/{addressBookName" +
+            "}/entries")
     @ResponseStatus(HttpStatus.CREATED)
     public void setEntries(
             @PathVariable(name = "username") @Pattern(regexp =
@@ -77,23 +82,25 @@ public class AddressBookController {
             @RequestParam(name = "personName") @Pattern(regexp =
                     pattern, message = "Invalid personName") String personName,
             @RequestParam(name = "phone") String phone) {
-        logger.info("setEntries called: username = {}, addressBookName = {}, personName = {}," +
+        logger.info("setEntries called: username = {}, addressBookName = {}, " +
+                "personName = {}," +
                 " phone = {} : ", username, addressBookName, personName, phone);
 
-         addressBookService.setAddressBookEntries(username.toUpperCase(),
-                 addressBookName.toUpperCase(),
-                 personName.toUpperCase(),
-                 validateAndNormalisePhone(phone));
+        addressBookService.setAddressBookEntries(username.toUpperCase(),
+                addressBookName.toUpperCase(),
+                personName.toUpperCase(),
+                validateAndNormalisePhone(phone));
     }
 
     /**
      * Validates and normalise a phone number to International format
+     *
      * @param phone
      * @return
      */
-    private String validateAndNormalisePhone(String phone){
+    private String validateAndNormalisePhone(String phone) {
         try {
-           return phoneNormalisationService.normalise(phone);
+            return phoneNormalisationService.normalise(phone);
         } catch (NumberParseException e) {
             throw new InvalidPhoneNumberException("Invalid Phone number: " + phone);
         }

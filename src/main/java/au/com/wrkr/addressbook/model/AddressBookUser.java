@@ -22,6 +22,8 @@ public class AddressBookUser implements Serializable {
     @Column(name = "username")
     private String userName;
     private String addressbookid;
+    @Column(name = "addressbookname")
+    private String addressBookName;
     @JsonManagedReference
     @OneToMany(mappedBy = "addressBookUser", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)

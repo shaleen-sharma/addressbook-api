@@ -16,13 +16,12 @@ public interface AddressBookEntriesRepository extends JpaRepository<AddressBookE
 
     String queryAddressBookEntriesByUser = "SELECT abe FROM " +
             "Address_Book_Entries abe " +
-            "inner join abe.addressBook ab on  abe.addressbookid = ab.id " +
             "inner join abe.addressBookUser abu on abe.addressbookid = abu.addressbookid " +
-            "where abu.userName = :username and (ab.name = :addressbookname or :addressbookname is null) order by abe.name";
+            "where abu.userName = :username and (abu.addressBookName = :addressbookname or " +
+            ":addressbookname is null) order by abe.name";
 
-    String queryinsertAddressBookEntries = "insert into Address_Book_Entries (addressbookid,name,phone) values (:addressbookid, :name, :phone)";
-
-    String queryinsertAddressBook = "insert into Address_Book (id,name) values (:id, :name)";
+    String queryinsertAddressBookEntries = "insert into Address_Book_Entries (addressbookid,name,phone) " +
+            "values (:addressbookid, :name, :phone)";
 
 
     @Query(queryAddressBookEntriesByUser)
@@ -35,11 +34,6 @@ public interface AddressBookEntriesRepository extends JpaRepository<AddressBookE
                      @Param("name") String name,
                      @Param("phone") String phone);
 
-    @Modifying
-    @Query(value = queryinsertAddressBook, nativeQuery = true)
-    void insertAddressBook(@Param("id") String id,
-                                  @Param("name") String name);
-
-    Optional<AddressBookEntries> findAddressBookEntriesByNameAndAddressBookId(String name, String addressBookId);
+    Optional<AddressBookEntries> findAddressBookEntriesByNameAndAddressbookid(String name, String addressBookId);
 }
 

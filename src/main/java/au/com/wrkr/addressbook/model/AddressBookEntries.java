@@ -25,10 +25,6 @@ public class AddressBookEntries {
     private String phone;
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="addressbookid", insertable = false, updatable = false)
-    private AddressBook addressBook;
-    @JsonBackReference
-    @ManyToOne
     @JoinColumn(name="addressbookid",referencedColumnName = "addressbookid"
             ,insertable = false, updatable = false)
     private AddressBookUser addressBookUser;

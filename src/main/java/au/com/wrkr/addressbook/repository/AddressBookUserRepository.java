@@ -7,20 +7,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 
 @Repository
 public interface AddressBookUserRepository extends JpaRepository<AddressBookUser, String> {
 
-   String queryinsertAddressBookUser = "insert into Address_Book_User (username,addressbookid) values (:username, :addressbookid)";
+   String queryinsertAddressBookUser = "insert into Address_Book_User (username,addressbookid,addressbookname) " +
+           "values (:username, :addressbookid, :addressbookname)";
 
-   List<AddressBookUser> findByUserNameAndAddressbookid(String userName, String addressBookId);
+   Optional<AddressBookUser> findByUserNameAndAddressBookName(String userName, String addressBookName);
 
    @Modifying
    @Query(value = queryinsertAddressBookUser, nativeQuery = true)
    void insertAddressBookUser(@Param("username") String userName,
-                          @Param("addressbookid") String addressBookId);
+                          @Param("addressbookname") String addressbookname,
+                          @Param("addressbookid") String addressbookid);
 
 }
 
