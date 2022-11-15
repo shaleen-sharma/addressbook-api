@@ -83,15 +83,10 @@ class AddressBookServiceImpl implements AddressBookService {
             //If addressBook exists then use the existing addressbookid
             addressBookId = addressBookUser.get().getAddressbookid();
             //check if there is an existing entry for same addressbook and same name
-            if (addressBookEntriesRepository.findAddressBookEntriesByNameAndAddressbookid(personName,
-                    addressBookUser.get().getAddressbookid()).isPresent()) {
-                throw new AddressBookNameAlreadyExists("Addressbook entry for" +
-                        " " +
-                        "same name already exists, " +
-                        "choose a different name: " + personName);
-            }
+            checkIfExistingEntryForGivenAddressBookAndName(personName,
+                    addressBookUser.get().getAddressbookid());
         } else {
-            //New addressbook being added
+            //New addressbook being added so generate a new id.
             addressBookId = generateUniqueAddressBookId(addressBookName,
                     personName);
             addressBookUserRepository.insertAddressBookUser(userName,
@@ -162,4 +157,13 @@ class AddressBookServiceImpl implements AddressBookService {
                         "user; " + userName));
     }
 
+    private void checkIfExistingEntryForGivenAddressBookAndName(String personName, String addressBookId){
+        if (addressBookEntriesRepository.findAddressBookEntriesByNameAndAddressbookid(personName,
+                addressBookId).isPresent()) {
+            throw new AddressBookNameAlreadyExists("Addressbook entry for" +
+                    " " +
+                    "same name already exists, " +
+                    "choose a different name: " + personName);
+        }
+    }
 }
